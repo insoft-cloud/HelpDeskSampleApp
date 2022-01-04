@@ -1,16 +1,12 @@
 package com.insoft.helpdesk.control.index;
 
 
-import com.insoft.helpdesk.jpa.entity.TestModel;
-import com.insoft.helpdesk.jpa.repo.TestModelRepo;
 import io.minio.*;
 import io.minio.errors.*;
-import io.minio.messages.Bucket;
 import io.minio.messages.Item;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.stereotype.Service;
@@ -20,7 +16,6 @@ import java.io.*;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.time.LocalDate;
-import java.util.Date;
 import java.util.List;
 
 @Service
@@ -33,9 +28,6 @@ public class IndexService {
     @Autowired
     MinioClient s3Client;
 
-    @Autowired
-    TestModelRepo testModelRepo;
-
     @Value("${amazone.s3.minio.bucket}")
     String bucket;
 
@@ -47,10 +39,6 @@ public class IndexService {
         }catch (Exception e){
             return "연결안됨 :  " + e.getMessage();
         }
-    }
-
-    public List<TestModel> getTestModel(){
-        return testModelRepo.findAll();
     }
 
     public Iterable<Result<Item>> getMinio() throws ServerException, InsufficientDataException, ErrorResponseException, IOException, NoSuchAlgorithmException, InvalidKeyException, InvalidResponseException, XmlParserException, InternalException {
